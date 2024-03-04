@@ -41,7 +41,7 @@ public class Layer
     }
 
     // Get the square of the error in a layer
-    double NodeCost(double outputActivation, double expectedOutput)
+    public double NodeCost(double outputActivation, double expectedOutput)
     {
         double error = outputActivation - expectedOutput;
         return error * error;

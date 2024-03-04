@@ -27,6 +27,34 @@ public class NeuralNetwork
         return inputs;
     }
 
+    // Calculate the error cost of a single data point
+    double Cost(DataPoint dataPoint)
+    {
+        double[] outputs = CalculateOutputs(dataPoint.inputs);
+        Layer outputLayer = layers[layers.Length - 1];
+        double cost = 0;
+
+        for (int nodeOut = 0; nodeOut < outputs.Length; nodeOut++)
+        {
+            cost += outputLayer.NodeCost(outputs[nodeOut], dataPoint.expectedOutputs[nodeOut]);
+        }
+
+        return cost;
+    }
+
+    // Calculate average error cost over all data points
+    double Cost(DataPoint[] data)
+    {
+        double totalCost = 0;
+
+        foreach(DataPoint dataPoint in data)
+        {
+            totalCost += Cost(dataPoint);
+        }
+
+        return totalCost / data.Length;
+    }
+
     // Run the inputs through the network and calculate which node has the highest value
     int Classify(double[] inputs)
     {
