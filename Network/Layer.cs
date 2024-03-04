@@ -19,7 +19,7 @@ public class Layer
     // Calculate the output of the layer
     public double[] CalculateOutputs(double[] inputs)
     {
-        double[] weightedInputs = new double[numNodesOut];
+        double[] activationValues = new double[numNodesOut];
 
         // Loop through outward connections
         for (int nodeOut = 0; nodeOut < numNodesOut; nodeOut++)
@@ -29,11 +29,28 @@ public class Layer
             // Loop through inward connections
             for (int nodeIn =  0; nodeIn < numNodesIn; nodeIn++)
             {
+                // Calculate value of the output node from its inputs
                 weightedInput += inputs[nodeIn] * weights[nodeIn, nodeOut];
             }
+
+            // Set outward node to calculated value
+            activationValues[nodeOut] = ActivationFunction(weightedInput);
         }
 
-        return weightedInputs;
+        return activationValues;
+    }
+
+    // Get the square of the error in a layer
+    double NodeCost(double outputActivation, double expectedOutput)
+    {
+        double error = outputActivation - expectedOutput;
+        return error * error;
+    }
+
+    double ActivationFunction(double input)
+    {
+        // ReLU function
+        return Math.Max(0, input);
     }
 
 }
