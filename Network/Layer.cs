@@ -2,7 +2,9 @@
 
 public class Layer
 {
-    int numNodesIn, numNodesOut;
+    public int numNodesIn, numNodesOut;
+    double[,] costGradientW;
+    double[] costGradientB;
     double[,] weights;
     double[] biases;
 
@@ -12,8 +14,45 @@ public class Layer
         this.numNodesIn = numNodesIn;
         this.numNodesOut = numNodesOut;
 
+        costGradientW = new double[numNodesIn, numNodesOut];
         weights = new double[numNodesIn, numNodesOut];
+        costGradientB = new double[numNodesOut];
         biases = new double[numNodesOut];
+        
+        InitialiseRandomWeights();
+        
+    }
+
+    // Generate random weights for all nodes
+    public void InitialiseRandomWeights()
+    {
+        Random rng = new Random();
+
+        for (int nodeIn = 0; nodeIn < numNodesIn; nodeIn++)
+        {
+            for (int nodeOut = 0; nodeOut < numNodesOut; nodeOut++)
+            {
+                // Generate random number between -1 and 1
+                double randomValue = rng.NextDouble() * 2 - 1;
+
+                // Scale random value to 1 / sqrt num of inputs
+                weights[nodeIn, nodeOut] = randomValue / Math.Sqrt(numNodesIn);
+
+            }
+        }
+    }
+
+    // Update weights and biases based on cost gradients
+    public void ApplyGradients(double learnRate)
+    {
+        for (int nodeOut = 0; nodeOut < numNodesOut; nodeOut++)
+        {
+            biases[nodeOut] -= costGradientB[nodeOut] * learnRate;
+            for (int nodeIn = 0; nodeIn < numNodesIn; nodeIn++)
+            {
+                weights[nodeIn, nodeOut] -= costGradientW[nodeIn, nodeOut] * learnRate;
+            }
+        }
     }
 
     // Calculate the output of the layer

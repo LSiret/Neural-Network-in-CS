@@ -55,6 +55,24 @@ public class NeuralNetwork
         return totalCost / data.Length;
     }
 
+    public void Learn(DataPoint[] trainingData, double learnRate)
+    {
+        const double h = 0.00001;
+        double originalCost = Cost(trainingData);
+
+        foreach (Layer layer in layers)
+        {
+            // Calculate the cost gradient for the current weight
+            for (int nodeIn = 0; nodeIn < layer.numNodesIn; nodeIn++)
+            {
+                for (int nodeOut = 0; nodeOut < layer.numNodesOut; nodeOut++)
+                {
+
+                }
+            }
+        }
+    }
+
     // Run the inputs through the network and calculate which node has the highest value
     int Classify(double[] inputs)
     {
