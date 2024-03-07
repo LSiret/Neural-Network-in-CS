@@ -55,6 +55,7 @@ public class NeuralNetwork
         return totalCost / data.Length;
     }
 
+    // Run a single iteration of gradient-descent (first-principle differentiation)
     public void Learn(DataPoint[] trainingData, double learnRate)
     {
         const double h = 0.00001;
@@ -67,9 +68,38 @@ public class NeuralNetwork
             {
                 for (int nodeOut = 0; nodeOut < layer.numNodesOut; nodeOut++)
                 {
-
+                    // Calculate gradient of individual node
+                    layer.weights[nodeIn, nodeOut] += h;
+                    double deltaCost = Cost(trainingData) - originalCost;
+                    layer.weights[nodeIn, nodeOut] -= h;
+                    
+                    // Store gradient of each node
+                    layer.costGradientW[nodeIn, nodeOut] = deltaCost / h;
                 }
             }
+
+            // Calculate cost gradient for current biases
+            for (int biasIndex = 0; biasIndex < layer.biases.Length; biasIndex++)
+            {
+                // Calculate gradient of individual bias
+                layer.biases[biasIndex] += h;
+                double deltaBias = Cost(trainingData) - originalCost;
+                layer.biases[biasIndex] -= h;
+
+                // Store gradient of each bias
+                layer.biases[biasIndex] = deltaBias / h;
+            }
+
+            ApplyAllGradients(learnRate);
+        }
+    }
+
+    // Call ApplyGradients on all nodes
+    void ApplyAllGradients(double learnRate)
+    {
+        foreach (Layer layer in layers)
+        {
+            layer.ApplyGradients(learnRate);
         }
     }
 

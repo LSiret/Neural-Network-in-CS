@@ -3,10 +3,10 @@
 public class Layer
 {
     public int numNodesIn, numNodesOut;
-    double[,] costGradientW;
-    double[] costGradientB;
-    double[,] weights;
-    double[] biases;
+    public double[,] costGradientW;
+    public double[] costGradientB;
+    public double[,] weights;
+    public double[] biases;
 
     // Create the layer
     public Layer(int numNodesIn, int numNodesOut)
